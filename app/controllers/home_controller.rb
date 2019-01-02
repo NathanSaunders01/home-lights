@@ -25,14 +25,14 @@ class HomeController < ApplicationController
     # request.authorization
     # respo = Net::HTTP.get(uri)
     
-    uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri)
-    request.authorization = "Basic #{encoded_resp}"
-    response = http.request(request)
+    # uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+    # http = Net::HTTP.new(uri.host, uri.port)
+    # request = Net::HTTP::Get.new(uri.request_uri)
+    # request.authorization = "Basic #{encoded_resp}"
+    # response = http.request(request)
     
-    puts response
-    current_owner.hue_token = response.access_token
+    # puts response
+    # current_owner.hue_token = response.access_token
     if current_owner.save!
       puts "Success"
       redirect_to root_path
