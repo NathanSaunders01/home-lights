@@ -28,7 +28,8 @@ class HomeController < ApplicationController
     uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Get.new(uri.request_uri)
-    request.authorization = "Basic #{encoded_resp}"
+    # request['authorization'] = "Basic #{encoded_resp}"
+    request.basic_auth encoded_resp
     response = http.request(request)
     
     puts response
