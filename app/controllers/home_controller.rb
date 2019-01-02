@@ -15,7 +15,7 @@ class HomeController < ApplicationController
     # puts response
     current_owner = Owner.first
     
-    encoded_resp = Base64.encode64("#{ENV[:HUE_ID]}:#{ENV[:HUE_SECRET]}")
+    encoded_resp = Base64.encode64("#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}")
     puts encoded_resp
     
     # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
