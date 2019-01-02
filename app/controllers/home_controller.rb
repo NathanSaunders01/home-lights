@@ -10,16 +10,16 @@ class HomeController < ApplicationController
   
   def auth
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
-    puts params
-    puts params[:code]
+    # puts params
+    # puts params[:code]
     # puts response
     current_owner = Owner.first
-    puts "#{ENV['HUE_TOKEN']}"
-    puts "#{ENV['HUE_SECRET']}"
+    # puts "#{ENV['HUE_TOKEN']}"
+    # puts "#{ENV['HUE_SECRET']}"
     # puts "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
     grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
     encoded_resp = Base64.encode64(grant_string)
-    puts encoded_resp
+    # puts encoded_resp
     
     # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
     # request.authorization
