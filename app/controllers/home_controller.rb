@@ -10,27 +10,16 @@ class HomeController < ApplicationController
   
   def auth
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
-    # puts params
-    # puts params[:code]
-    # puts response
     current_owner = Owner.first
-    # puts "#{ENV['HUE_TOKEN']}"
-    # puts "#{ENV['HUE_SECRET']}"
-    # puts "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
     grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
     encoded_resp = Base64.encode64(grant_string)
-    # puts encoded_resp
     
-    # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
-    # request.authorization
-    # respo = Net::HTTP.get(uri)
     
     uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri)
-    # request['authorization'] = "Basic #{encoded_resp}"
+    # http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.request_uri)
+    # request = Net::HTTP::Get.new(uri.request_uri)
     request['authorization'] = "Basic #{encoded_resp}"
-    # request.basic_auth "Basic", encoded_resp
     puts request
     response = http.request(request)
     
