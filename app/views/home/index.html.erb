@@ -1,5 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <div class="container">
+    
     <ul class="tabs">
         <li class="tab"><a class="active" href="#light_1">Light Strip</a></li>
         <li class="tab"><a href="#light_2">Bulb 1</a></li>
@@ -9,6 +10,7 @@
         <div id="light_1">
             <%= form_for :light, url: change_light_state_path  do |f| %>
                 <div class="row-ns" style="margin-bottom: 0;">
+                    <a class="form-ns__btn" href="https://api.meethue.com/oauth2/auth">Install Remote API</a>
                     <div class="row-ns__even">
                         <%= f.text_field :hue, placeholder:"Hue", autofocus: true, class: "form-ns__input" %>
                         <%= f.label :hue, class: "form-ns__label" %>
