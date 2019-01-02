@@ -2,17 +2,34 @@ class HomeController < ApplicationController
   before_action :authenticate_owner!
   
   require 'net/http'
+  require "base64"
   
   def index
     @hue_token = ENV['HUE_TOKEN']
   end
   
   def auth
+    # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     puts params
     puts params[:code]
-    puts response
+    # puts response
     current_owner = Owner.first
-    current_owner.hue_token = params[:code]
+    
+    encoded_resp = Base64.encode64("#{ENV[:HUE_ID]}:#{ENV[:HUE_SECRET]}")
+    puts encoded_resp
+    
+    # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+    # request.authorization
+    # respo = Net::HTTP.get(uri)
+    
+    uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.authorization = "Basic #{encoded_resp}"
+    response = http.request(request)
+    
+    puts response
+    current_owner.hue_token = response.access_token
     if current_owner.save!
       puts "Success"
       redirect_to root_path
