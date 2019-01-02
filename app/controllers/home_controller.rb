@@ -14,6 +14,8 @@ class HomeController < ApplicationController
     puts params[:code]
     # puts response
     current_owner = Owner.first
+    puts ENV[:HUE_TOKEN]
+    puts ENV[:HUE_SECRET]
     puts "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
     grant_string = "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
     encoded_resp = Base64.encode64(grant_string)
