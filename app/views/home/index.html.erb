@@ -1,0 +1,64 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<div class="container">
+    <ul class="tabs">
+        <li class="tab"><a class="active" href="#light_1">Light Strip</a></li>
+        <li class="tab"><a href="#light_2">Bulb 1</a></li>
+        <li class="tab"><a href="#light_3">Bulb 2</a></li>
+    </ul>
+    <div class="form-ns" style="margin-top: 40px;">
+        <div id="light_1">
+            <%= form_for :light, url: change_light_state_path  do |f| %>
+                <div class="row-ns" style="margin-bottom: 0;">
+                    <div class="row-ns__even">
+                        <%= f.text_field :hue, placeholder:"Hue", autofocus: true, class: "form-ns__input" %>
+                        <%= f.label :hue, class: "form-ns__label" %>
+                    </div>
+                    <div class="row-ns__even">
+                        <%= f.text_field :bright, placeholder:"Brightness", autofocus: true, class: "form-ns__input" %>
+                        <%= f.label :bright, class: "form-ns__label" %>
+                    </div>
+                </div>
+                <p class="form-ns__input" style="width: auto; margin: 0;">Speed</p>
+                <p class="range-field" style="margin-top: 0;">
+                    <input type="range" id="test5" min="0" max="50" step="5" />
+                </p>
+                <div class="row-ns">
+                    <input type="hidden" id="duration"/>
+                    <div class="row-ns__even" style="margin-right: 5px;">
+                        <button type="button" class="form-ns__btn" id="time_15">15 mins</button>
+                    </div>
+                    <div class="row-ns__even" style="margin-right: 5px;">
+                        <button type="button" class="form-ns__btn" id="time_30">30 mins</button>
+                    </div>
+                    <div class="row-ns__even" style="margin-right: 5px;">
+                        <button type="button" class="form-ns__btn" id="time_45">45 mins</button>
+                    </div>
+                    <div class="row-ns__even">
+                        <button type="button" class="form-ns__btn" id="time_60">60 mins</button>
+                    </div>
+                </div>
+                <%= f.submit "UPDATE", class: "form-ns__btn" %>
+            <% end %>
+        </div>
+        <div id="light_2">Test 2</div>
+        <div id="light_3">Test 3</div>
+    </div>
+
+</div>
+
+<script>
+    $(document).on('turbolinks:load', function() {
+        $('.tabs').tabs({
+            // swipeable: true
+        });
+        $("button[id^='time_']").on("click", function() {
+            var timer_id = $(this).attr("id")
+           handleTimeSelection(timer_id); 
+        });
+    });
+    
+    function handleTimeSelection(id) {
+        $(".form-ns__btn").removeClass("active");
+        $("#"+id).addClass("active");
+    }
+</script>

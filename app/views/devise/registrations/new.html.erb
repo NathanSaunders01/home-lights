@@ -1,0 +1,18 @@
+<% if Owner.all.size < 1 %>
+  <div class="form-ns">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= devise_error_messages! %>
+    
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder:"Email", class:"form-ns__input" %>
+        <%= f.label :email, class: "form-ns__label" %>
+        
+        <%= f.password_field :password, autocomplete: "new-password", placeholder:"Password", class:"form-ns__input" %>
+        <%= f.label :password, class: "form-ns__label" %>
+        
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder:"Confirm password", class:"form-ns__input" %>
+        <%= f.label :password_confirmation, class: "form-ns__label" %>
+    
+        <%= f.submit "CREATE", class: "form-ns__btn" %>
+    <% end %>
+  </div>
+<% end %>

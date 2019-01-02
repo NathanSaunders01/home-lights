@@ -1,0 +1,12 @@
+<div class="form-ns">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <%= f.email_field :email, placeholder:"Email", autofocus: true, autocomplete: "email", class: "form-ns__input" %>
+    <%= f.label :email, class: "form-ns__label" %><br />
+  
+    <%= f.password_field :password, placeholder:"Password", autocomplete: "current-password", class: "form-ns__input" %>
+    <%= f.label :password, class: "form-ns__label" %>
+  
+    <%= f.submit "ENTER", class: "form-ns__btn" %>
+  <% end %>
+
+</div>

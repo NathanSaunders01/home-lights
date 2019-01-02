@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 12px;
+    
+    &-title {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 400;
+        background: red;
+        background: -webkit-linear-gradient(left, orange , yellow, cyan, blue);
+        background: -o-linear-gradient(right, orange, yellow, cyan, blue);
+        background: -moz-linear-gradient(right, orange, yellow, cyan, blue);
+        background: linear-gradient(to right, orange , yellow, cyan, blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    &-subtitle {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 22px;
+        font-weight: 200;
+    } 
+}

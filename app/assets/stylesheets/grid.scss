@@ -1,0 +1,9 @@
+.row-ns {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    &__even {
+        flex: 1;
+    }
+}

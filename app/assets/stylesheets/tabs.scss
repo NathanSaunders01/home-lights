@@ -1,0 +1,30 @@
+.tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    position: relative;
+    padding: 0;
+    
+    .indicator {
+        position: absolute;
+        bottom: 0;
+        height: 2px;
+        background-color: black;
+        will-change: left, right;
+    }
+    
+    .tab {
+        min-width: 160px;
+        padding: 8px 0;
+        text-align: center;
+        
+        a {
+            text-decoration: none;
+            color: black;
+            font-weight: 200;
+            padding: 0 10px;
+            font-size: 24px;
+        }
+    }
+}
