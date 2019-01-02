@@ -6,6 +6,9 @@ class HomeController < ApplicationController
   def index
   end
   
+  def auth
+  end
+  
   def change_light_state
     #   uri = URI.parse("http://192.168.1.23/api/9gJAubXPvRsPgaoaL6tpWk949J3th1htn31NXIET/lights")
     #   http = Net::HTTP.new(uri.host)

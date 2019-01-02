@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
   
   get "/home", to: "home#index"
-  get '/callback'
+  get '/callback', to: "home#auth"
   post "change_light_state", to: "home#change_light_state"
   post "toggle_light", to: "home#toggle_light"
   
