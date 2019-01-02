@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_action :authenticate_owner!
   
   require 'net/http'
-  require "base64"
+  require 'base64'
   
   def index
     @hue_token = ENV['HUE_TOKEN']
@@ -14,8 +14,9 @@ class HomeController < ApplicationController
     puts params[:code]
     # puts response
     current_owner = Owner.first
-    
-    encoded_resp = Base64.encode64("#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}")
+    puts "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
+    grant_string = "#{ENV[:HUE_TOKEN]}:#{ENV[:HUE_SECRET]}"
+    encoded_resp = Base64.encode64(grant_string)
     puts encoded_resp
     
     # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
