@@ -4,9 +4,22 @@ class HomeController < ApplicationController
   require 'net/http'
   
   def index
+    @hue_token = ENV['HUE_TOKEN']
   end
   
   def auth
+    puts params
+    puts params[:code]
+    puts response
+    current_owner = Owner.first
+    current_owner.hue_token = params[:code]
+    if current_owner.save!
+      puts "Success"
+      redirect_to root_path
+    else
+      puts "Fail"
+      redirect_to root_path
+    end
   end
   
   def change_light_state
