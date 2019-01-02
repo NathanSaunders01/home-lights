@@ -14,12 +14,13 @@ class HomeController < ApplicationController
     grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
     encoded_resp = Base64.encode64(grant_string)
     
-    
-    uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+    # uri = URI('http://www.example.com/todo.cgi')
+    # req = Net::HTTP::Post.new(uri)
+    uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
     # http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.request_uri)
+    request = Net::HTTP::Post.new(uri)
     # request = Net::HTTP::Get.new(uri.request_uri)
-    request['authorization'] = "Basic #{encoded_resp}"
+    request["authorization"] = "Basic #{encoded_resp}"
     puts request
     response = http.request(request)
     
