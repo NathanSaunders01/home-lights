@@ -8,11 +8,11 @@ class HomeController < ApplicationController
   require "uri"
 
   def install
-    
+    @hue_token = ENV['HUE_TOKEN']
   end
   
   def index
-    @hue_token = ENV['HUE_TOKEN']
+    
   end
   
   def auth
