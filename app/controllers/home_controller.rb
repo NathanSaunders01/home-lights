@@ -21,8 +21,8 @@ class HomeController < ApplicationController
     # http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri)
     # request = Net::HTTP::Get.new(uri.request_uri)
-    request["Authorization"] = "Basic #{auth}"
-    puts request
+    # request["Authorization"] = "Basic #{auth}"
+    # puts request
     response = http.request(request)
     
     puts response
