@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :authenticate_owner!
-  before_action :authenticate_hue, except: [:install]
+  before_action :authenticate_hue, except: [:install, :auth]
   
   require 'net/http'
   require 'base64'
