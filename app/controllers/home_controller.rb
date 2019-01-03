@@ -3,8 +3,8 @@ class HomeController < ApplicationController
   
   require 'net/http'
   require 'base64'
-  require "net/http"
-require "uri"
+  require 'net/https'
+  require "uri"
 
 
   
