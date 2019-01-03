@@ -22,6 +22,10 @@ class HomeController < ApplicationController
     http.use_ssl = true
     resp = http.request(request)
     puts resp.inspect
+    body = resp.body
+    data = JSON.parse body
+    puts data
+    puts data['access_token']
     
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     current_owner = Owner.first
@@ -40,7 +44,7 @@ class HomeController < ApplicationController
     # response = http.request(request)
     
     
-    current_owner.hue_token = resp.access_token
+    current_owner.hue_token = data['access_token']
     if current_owner.save!
       puts "Success"
       redirect_to root_path
