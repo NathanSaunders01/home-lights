@@ -1,3 +1,8 @@
 <header class="header">
     <h1><span class="header-title">Codaxe&nbsp;&nbsp;</span><span class="header-subtitle">-&nbsp;&nbsp;Home Light System</span></h1>
+    <% if owner_signed_in? %>
+        <%= link_to "SIGN OUT", destroy_owner_session %>
+    <% else %>
+        <%= link_to "SIGN IN", new_owner_session %>
+    <% end %>
 </header>
