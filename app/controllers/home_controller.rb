@@ -48,9 +48,10 @@ class HomeController < ApplicationController
     resp = http.request(request)
     puts resp.inspect
     puts resp
-    body = resp.body
-    data = JSON.parse body
-    puts data
+    puts resp.body
+    # body = resp.body
+    # data = JSON.parse body
+    # puts data
     # puts data['access_token']
     
     # current_owner.hue_token = data["access_token"]
