@@ -55,6 +55,9 @@
         font-size: 24px;
         transition: all .3s;
         outline: none;
+        display: block;
+        text-decoration: none;
+        color: black;
         
         &:hover,
         &.active {

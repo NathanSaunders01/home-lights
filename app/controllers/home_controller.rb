@@ -1,12 +1,15 @@
 class HomeController < ApplicationController
   before_action :authenticate_owner!
+  before_action :authenticate_hue, except: [:install]
   
   require 'net/http'
   require 'base64'
   require 'net/https'
   require "uri"
 
-
+  def install
+    
+  end
   
   def index
     @hue_token = ENV['HUE_TOKEN']
@@ -28,7 +31,7 @@ class HomeController < ApplicationController
     puts data['access_token']
     
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
-    current_owner = Owner.first
+    # current_owner = Owner.first
     # grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
     # encoded_resp = Base64.encode64(grant_string)
     # auth = 'Basic ' + Base64.encode64( "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}" ).chomp
@@ -44,13 +47,16 @@ class HomeController < ApplicationController
     # response = http.request(request)
     
     
-    current_owner.hue_token = data['access_token']
+    current_owner.hue_token = data["access_token"]
+    current_owner.hue_expiry = Time.now + data["access_token_expires_in"]
+    current_owner.refresh_token = data["refresh_token"]
+    current_owner.refresh_expiry = Time.now + data["refresh_token_expires_in"]
     if current_owner.save!
       puts "Success"
-      redirect_to root_path
+      redirect_to home_path
     else
       puts "Fail"
-      redirect_to root_path
+      redirect_to install_path
     end
   end
   
@@ -69,6 +75,15 @@ class HomeController < ApplicationController
   
   def toggle_light
       
+  end
+  
+  private
+  
+  def authenticate_hue
+    # current_owner = Owner.first
+    if current_owner.hue_token.blank?
+      redirect_to install_path
+    end
   end
   
 #     HUE_RANGE = 0..65535
@@ -238,7 +253,7 @@ class HomeController < ApplicationController
 #       @x, @y = @state['xy']
 #     end
 
-    def base_url
-      "http://#{@bridge.ip}/api/#{@client.username}/lights/#{id}"
-    end
+    # def base_url
+    #   "http://#{@bridge.ip}/api/#{@client.username}/lights/#{id}"
+    # end
 end

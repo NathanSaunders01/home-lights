@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190102210415) do
+ActiveRecord::Schema.define(version: 20190103123726) do
 
   create_table "owners", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20190102210415) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "hue_token"
+    t.datetime "hue_expiry"
+    t.string   "refresh_token"
+    t.datetime "refresh_expiry"
     t.index ["email"], name: "index_owners_on_email", unique: true
     t.index ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true
   end

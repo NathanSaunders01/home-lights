@@ -10,7 +10,6 @@
         <div id="light_1">
             <%= form_for :light, url: change_light_state_path  do |f| %>
                 <div class="row-ns" style="margin-bottom: 0;">
-                    <a class="form-ns__btn" href="https://api.meethue.com/oauth2/auth?clientid=<%= @hue_token %>&appid=1&deviceid=test_id&devicename=test_device&state=jfS46vV43GDdfh443DFW&response_type=code">Install Remote API</a>
                     <div class="row-ns__even">
                         <%= f.text_field :hue, placeholder:"Hue", autofocus: true, class: "form-ns__input" %>
                         <%= f.label :hue, class: "form-ns__label" %>
@@ -20,7 +19,11 @@
                         <%= f.label :bright, class: "form-ns__label" %>
                     </div>
                 </div>
-                <p class="form-ns__input" style="width: auto; margin: 0;">Speed</p>
+                <p class="form-ns__input" style="width: auto; margin: 0;">Color Change Speed</p>
+                <p class="range-field" style="margin-top: 0;">
+                    <input type="range" id="test5" min="0" max="50" step="5" />
+                </p>
+                <p class="form-ns__input" style="width: auto; margin: 0;">Brightness Change Speed</p>
                 <p class="range-field" style="margin-top: 0;">
                     <input type="range" id="test5" min="0" max="50" step="5" />
                 </p>
