@@ -20,10 +20,8 @@ class HomeController < ApplicationController
     request = Net::HTTP::Post.new(uri.request_uri)
     request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
     http.use_ssl = true
-    puts request
-    puts http
     resp = http.request(request)
-    puts resp
+    puts resp.inspect
     
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     current_owner = Owner.first
@@ -42,7 +40,7 @@ class HomeController < ApplicationController
     # response = http.request(request)
     
     
-    current_owner.hue_token = response.access_token
+    current_owner.hue_token = resp.access_token
     if current_owner.save!
       puts "Success"
       redirect_to root_path
