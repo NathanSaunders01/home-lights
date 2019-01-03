@@ -11,8 +11,9 @@ class HomeController < ApplicationController
   def auth
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     current_owner = Owner.first
-    grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
-    encoded_resp = Base64.encode64(grant_string)
+    # grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
+    # encoded_resp = Base64.encode64(grant_string)
+    auth = 'Basic ' + Base64.encode64( "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}" ).chomp
     
     # uri = URI('http://www.example.com/todo.cgi')
     # req = Net::HTTP::Post.new(uri)
@@ -20,7 +21,7 @@ class HomeController < ApplicationController
     # http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri)
     # request = Net::HTTP::Get.new(uri.request_uri)
-    request["authorization"] = "Basic #{encoded_resp}"
+    request["Authorization"] = "Basic #{auth}"
     puts request
     response = http.request(request)
     
