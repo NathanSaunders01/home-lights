@@ -30,27 +30,10 @@ class HomeController < ApplicationController
     puts data
     puts data['access_token']
     
-    # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
-    # current_owner = Owner.first
-    # grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
-    # encoded_resp = Base64.encode64(grant_string)
-    # auth = 'Basic ' + Base64.encode64( "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}" ).chomp
-    
-    # uri = URI('http://www.example.com/todo.cgi')
-    # req = Net::HTTP::Post.new(uri)
-    # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
-    # http = Net::HTTP.new(uri.host, uri.port)
-    # request = Net::HTTP::Post.new(uri)
-    # request = Net::HTTP::Get.new(uri.request_uri)
-    # request["Authorization"] = "Basic #{auth}"
-    # puts request
-    # response = http.request(request)
-    
-    
     current_owner.hue_token = data["access_token"]
-    current_owner.hue_expiry = Time.now + data["access_token_expires_in"]
+    current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
     current_owner.refresh_token = data["refresh_token"]
-    current_owner.refresh_expiry = Time.now + data["refresh_token_expires_in"]
+    current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
     if current_owner.save!
       puts "Success"
       redirect_to home_path
