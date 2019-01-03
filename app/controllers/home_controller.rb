@@ -21,7 +21,7 @@ class HomeController < ApplicationController
     body = { "linkbutton": true }
     req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
     req.body = body.to_json
-    http.use_ssl = true
+    # http.use_ssl = true
     resp = http.request(request)
     puts resp.body
     
