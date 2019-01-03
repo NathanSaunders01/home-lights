@@ -3,27 +3,39 @@ class HomeController < ApplicationController
   
   require 'net/http'
   require 'base64'
+  require "net/http"
+require "uri"
+
+
   
   def index
     @hue_token = ENV['HUE_TOKEN']
   end
   
   def auth
+    
+    uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
+    response = http.request(request)
+    
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     current_owner = Owner.first
     # grant_string = "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}"
     # encoded_resp = Base64.encode64(grant_string)
-    auth = 'Basic ' + Base64.encode64( "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}" ).chomp
+    # auth = 'Basic ' + Base64.encode64( "#{ENV['HUE_TOKEN']}:#{ENV['HUE_SECRET']}" ).chomp
     
     # uri = URI('http://www.example.com/todo.cgi')
     # req = Net::HTTP::Post.new(uri)
-    uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+    # uri = URI("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
     # http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri)
+    # request = Net::HTTP::Post.new(uri)
     # request = Net::HTTP::Get.new(uri.request_uri)
     # request["Authorization"] = "Basic #{auth}"
     # puts request
-    response = http.request(request)
+    # response = http.request(request)
     
     puts response
     current_owner.hue_token = response.access_token
