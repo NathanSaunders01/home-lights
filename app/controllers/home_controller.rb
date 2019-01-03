@@ -43,26 +43,27 @@ class HomeController < ApplicationController
 
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
-    request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
+    # request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
     http.use_ssl = true
     resp = http.request(request)
     puts resp.inspect
+    puts resp
     body = resp.body
     data = JSON.parse body
     puts data
-    puts data['access_token']
+    # puts data['access_token']
     
-    current_owner.hue_token = data["access_token"]
-    current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
-    current_owner.refresh_token = data["refresh_token"]
-    current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
-    if current_owner.save!
-      puts "Success"
-      redirect_to home_path
-    else
-      puts "Fail"
-      redirect_to install_path
-    end
+    # current_owner.hue_token = data["access_token"]
+    # current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
+    # current_owner.refresh_token = data["refresh_token"]
+    # current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
+    # if current_owner.save!
+    #   puts "Success"
+    #   redirect_to home_path
+    # else
+    #   puts "Fail"
+    #   redirect_to install_path
+    # end
   end
   
   def change_light_state
