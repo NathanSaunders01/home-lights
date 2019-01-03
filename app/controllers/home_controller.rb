@@ -20,7 +20,10 @@ require "uri"
     request = Net::HTTP::Post.new(uri.request_uri)
     request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
     http.use_ssl = true
+    puts request
+    puts http
     resp = http.request(request)
+    puts resp
     
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
     current_owner = Owner.first
@@ -38,7 +41,7 @@ require "uri"
     # puts request
     # response = http.request(request)
     
-    puts resp
+    
     current_owner.hue_token = response.access_token
     if current_owner.save!
       puts "Success"
