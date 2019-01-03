@@ -19,6 +19,7 @@ require "uri"
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Get.new(uri.request_uri)
     request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
+    http.use_ssl = true
     response = http.request(request)
     
     # https://codaxe-home-lights.herokuapp.com/callback?code=CLHCZMk9&state=jfS46vV43GDdfh443DFW 
