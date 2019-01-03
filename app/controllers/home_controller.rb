@@ -15,6 +15,28 @@ class HomeController < ApplicationController
     
   end
   
+  def get_username
+    uri = URI.parse("https://api.meethue.com/bridge/0/config")
+    http = Net::HTTP.new(uri.host, uri.port)
+    body = { "linkbutton": true }
+    req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    req.body = body.to_json
+    http.use_ssl = true
+    resp = http.request(request)
+    puts resp.body
+    
+    next_uri = URI.parse("https://api.meethue.com/bridge/0/config")
+    next_http = Net::HTTP.new(next_uri.host, next_uri.port)
+    next_body = { "devicetype":"codaxe_home_lights" }
+    next_req = Net::HTTP::Post.new(next_uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    next_req.body = body.to_json
+    next_http.use_ssl = true
+    next_resp = next_http.request(request)
+    puts next_resp.body
+    data = JSON.parse body
+    puts data.inspect
+  end
+  
   def auth
     
     uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
