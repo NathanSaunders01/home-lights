@@ -72,9 +72,9 @@ class HomeController < ApplicationController
     digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token', response='#{response_digest}'"
     puts digest
     
-    header = { 'Authorization': "Digest #{digest}" }
+    # header = { 'Authorization': "Digest #{digest}" }
     
-    puts header
+    # puts header
     
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
@@ -83,7 +83,7 @@ class HomeController < ApplicationController
     puts "test prep"
     new_http.use_ssl = true
     new_request['Authorization'] = "Digest #{digest}"
-    # puts new_request.headers.to_hash.inspect
+    puts new_request.headers.to_hash.inspect
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
     puts "test done"
