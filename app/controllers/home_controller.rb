@@ -39,36 +39,62 @@ class HomeController < ApplicationController
   end
   
   def auth
-    
     uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
-    # request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
     http.use_ssl = true
     resp = http.request(request)
     puts "Headers: #{resp.to_hash.inspect}"
     puts resp.to_hash["www-authenticate"]
     puts resp.to_hash["www-authenticate"][0]
-    puts resp.to_hash["www-authenticate"][0].split(",")
-    nonce = resp.to_hash["www-authenticate"][0].split(",")[1].delete!('nonce=\"')
-    realm = resp.to_hash["www-authenticate"][0].split(",")[0].delete!('Digest realm=\"')
-    # body = resp.body
-    # data = JSON.parse body
-    # puts data
-    # puts data['access_token']
     
-    # current_owner.hue_token = data["access_token"]
-    # current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
-    # current_owner.refresh_token = data["refresh_token"]
-    # current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
-    # if current_owner.save!
-    #   puts "Success"
-    #   redirect_to home_path
-    # else
-    #   puts "Fail"
-    #   redirect_to install_path
-    # end
+    # nonce = resp.to_hash["www-authenticate"][0].split(",")[1].delete!('nonce=\"').tr(" ","")
+    nonce = resp.to_hash["www-authenticate"][0].split(",")[1].split("=")[1].tr('\"','')
+    realm = resp.to_hash["www-authenticate"][0].split(",")[0].split("=")[1].tr('\"','')
+    puts nonce
+    puts realm
+    
+    # HASH1	MD5(“CLIENTID” + “:” + “REALM” + “:” + “CLIENTSECRET”)
+    # HASH2	MD5(“VERB” + “:” + “PATH”)
+    # response	MD5(HASH1 + “:” + “NONCE” + “:” + HASH2)
+    
+    # var HASH1 = MD5("kVWjgzqk8hayM38pAudrA6psflju6k0T:oauth2_client@api.meethue.com:GHFV3f4L736bwgEB");
+    # var HASH2 = MD5("POST:/oauth2/token");
+    # var response = MD5(HASH1 + ":" + "7b6e45de18ac4ee452ee0a0de91dbb10" + ":" + HASH2);
+    
+    response_digest_1 = Digest::MD5.hexdigest("#{ENV['HUE_TOKEN'}:#{realm}:#{ENV['HUE_SECRET'}")
+    response_digest_2 = Digest::MD5.hexdigest("POST:/oauth2/token")
+    response_digest = Digest::MD5.hexdigest("#{response_digest_1}:#{nonce}:#{response_digest_2}")
+    digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token' , response='#{response_digest}'"
+    
+    header = { 'Authorization' => "Digest #{digest}" }
+    
+    new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
+
+    new_http = Net::HTTP.new(new_uri.host, new_uri.port)
+    new_request = Net::HTTP::Post.new(new_uri.request_uri, header)
+    new_http.use_ssl = true
+    new_resp = new_http.request(new_request)
+    
+    # Digest username=”<clientid>”, realm=”oauth2_client@api.meethue.com”, nonce=”<nonce>”, uri=”/oauth2/token”, response=”<response>”
+    
+    body = new_resp.body
+    data = JSON.parse body
+    puts data
+    puts data['access_token']
+    # "Digest realm="oauth2_client@api.meethue.com", nonce="700b0ee5e8537be8dd4c62f35cea4ad8""
+    current_owner.hue_token = data["access_token"]
+    current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
+    current_owner.refresh_token = data["refresh_token"]
+    current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
+    if current_owner.save!
+      puts "Success"
+      redirect_to home_path
+    else
+      puts "Fail"
+      redirect_to install_path
+    end
   end
   
   def change_light_state
