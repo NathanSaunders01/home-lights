@@ -44,7 +44,7 @@ class HomeController < ApplicationController
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.request_uri)
     # request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
-    http.use_ssl = true
+    # http.use_ssl = true
     resp = http.request(request)
     puts resp.inspect
     puts resp
