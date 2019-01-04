@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   require 'base64'
   require 'net/https'
   require "uri"
+  require 'digest/md5'
 
   def install
     @hue_token = ENV['HUE_TOKEN']
@@ -50,6 +51,8 @@ class HomeController < ApplicationController
     puts resp.to_hash["www-authenticate"]
     puts resp.to_hash["www-authenticate"][0]
     puts resp.to_hash["www-authenticate"][0].split(",")
+    nonce = resp.to_hash["www-authenticate"][0].split(",")[1].delete!('nonce=\"')
+    realm = resp.to_hash["www-authenticate"][0].split(",")[0].delete!('Digest realm=\"')
     # body = resp.body
     # data = JSON.parse body
     # puts data
