@@ -48,7 +48,7 @@ class HomeController < ApplicationController
     resp = http.request(request)
     puts resp.inspect
     puts resp
-    puts resp.body
+    puts resp.headers
     # body = resp.body
     # data = JSON.parse body
     # puts data
