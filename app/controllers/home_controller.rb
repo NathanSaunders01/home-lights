@@ -79,19 +79,19 @@ class HomeController < ApplicationController
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
-    new_request = Net::HTTP::Post.new(new_uri.request_uri)
+    new_request = Net::HTTP::Post.new(new_uri.path, initheader = {'Authorization' =>"#{digest}"})
     puts "test prep"
     new_http.use_ssl = true
     new_request['Authorization'] = "Digest #{digest}"
-    puts new_request.headers.to_hash.inspect
+    puts new_request.to_hash.inspect
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
     puts "test done"
     # Digest username=”<clientid>”, realm=”oauth2_client@api.meethue.com”, nonce=”<nonce>”, uri=”/oauth2/token”, response=”<response>”
     # Digest username='ZNjRhksxVd5bUYJktFMot953iDOIgUaz', realm='oauth2_client@api.meethue.com', nonce='ab4cf293ccf1a5017fe498722ef88abb', uri='/oauth2/token' , response='4c58befa01cea9fe4e6e293318cda190'"}
     
-    puts new_resp
-    puts new_resp.inspect
+    # puts new_resp
+    # puts new_resp.inspect
     # data = JSON.parse body
     # puts data
     # puts data['access_token']
