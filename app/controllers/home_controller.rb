@@ -68,8 +68,8 @@ class HomeController < ApplicationController
     response_digest_2 = Digest::MD5.hexdigest(string_digest_2)
     string_digest = "#{response_digest_1}:#{nonce}:#{response_digest_2}"
     response_digest = Digest::MD5.hexdigest(string_digest)
-    puts "test"
-    digest = "username='ksjdngkfjsngskfdjng', realm='dkslfmaksdngjl', nonce='#{nonce}', uri='/oauth2/token' , response='#{response_digest}'"
+    puts "test start"
+    digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token' , response='#{response_digest}'"
     
     header = { 'Authorization' => "Digest #{digest}" }
     
@@ -77,9 +77,10 @@ class HomeController < ApplicationController
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
     new_request = Net::HTTP::Post.new(new_uri.request_uri, header)
+    puts "test prep"
     new_http.use_ssl = true
     new_resp = new_http.request(new_request)
-    
+    puts "test done"
     # Digest username=”<clientid>”, realm=”oauth2_client@api.meethue.com”, nonce=”<nonce>”, uri=”/oauth2/token”, response=”<response>”
     
     body = new_resp.body
