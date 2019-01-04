@@ -47,7 +47,7 @@ class HomeController < ApplicationController
     http.use_ssl = true
     resp = http.request(request)
     puts resp.inspect
-    puts resp
+    puts resp.nonce
     puts resp.header.inspect
     # body = resp.body
     # data = JSON.parse body
