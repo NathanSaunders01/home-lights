@@ -72,7 +72,7 @@ class HomeController < ApplicationController
     digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token', response='#{response_digest}'"
     puts digest
     
-    header = { 'Authorization' => "Digest #{digest}" }
+    header = { 'Authoriation' => "Digest #{digest}" }
     
     puts header
     
