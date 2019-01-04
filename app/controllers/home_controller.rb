@@ -70,6 +70,7 @@ class HomeController < ApplicationController
     response_digest = Digest::MD5.hexdigest(string_digest)
     puts "test start"
     digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token' , response='#{response_digest}'"
+    puts digest
     
     header = { 'Authorization' => "Digest #{digest}" }
     
