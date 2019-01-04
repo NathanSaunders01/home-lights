@@ -62,10 +62,12 @@ class HomeController < ApplicationController
     # var HASH1 = MD5("kVWjgzqk8hayM38pAudrA6psflju6k0T:oauth2_client@api.meethue.com:GHFV3f4L736bwgEB");
     # var HASH2 = MD5("POST:/oauth2/token");
     # var response = MD5(HASH1 + ":" + "7b6e45de18ac4ee452ee0a0de91dbb10" + ":" + HASH2);
-    
-    response_digest_1 = Digest::MD5.hexdigest("#{ENV['HUE_TOKEN'}:#{realm}:#{ENV['HUE_SECRET'}")
-    response_digest_2 = Digest::MD5.hexdigest("POST:/oauth2/token")
-    response_digest = Digest::MD5.hexdigest("#{response_digest_1}:#{nonce}:#{response_digest_2}")
+    string_digest_1 = "#{ENV['HUE_TOKEN']}:#{realm}:#{ENV['HUE_SECRET']}"
+    string_digest_2 = "POST:/oauth2/token"
+    response_digest_1 = Digest::MD5.hexdigest(string_digest_1)
+    response_digest_2 = Digest::MD5.hexdigest(string_digest_2)
+    string_digest = "#{response_digest_1}:#{nonce}:#{response_digest_2}"
+    response_digest = Digest::MD5.hexdigest(string_digest)
     digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token' , response='#{response_digest}'"
     
     header = { 'Authorization' => "Digest #{digest}" }
