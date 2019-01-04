@@ -82,6 +82,7 @@ class HomeController < ApplicationController
     new_request = Net::HTTP::Post.new(new_uri.request_uri, header)
     puts "test prep"
     new_http.use_ssl = true
+    new_request.headers['Authorization'] = "Digest #{digest}"
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
     puts "test done"
