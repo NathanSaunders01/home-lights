@@ -46,7 +46,7 @@ class HomeController < ApplicationController
     # request.basic_auth("#{ENV['HUE_TOKEN']}", "#{ENV['HUE_SECRET']}")
     http.use_ssl = true
     resp = http.request(request)
-    puts params
+    puts "Headers: #{resp.to_hash.inspect}"
     puts resp
     puts resp.header
     puts resp.body
