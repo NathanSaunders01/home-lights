@@ -82,7 +82,7 @@ class HomeController < ApplicationController
     new_request = Net::HTTP::Post.new(new_uri.path, initheader = {'Authorization' =>"#{digest}"})
     puts "test prep"
     new_http.use_ssl = true
-    new_request['Authorization'] = "Digest #{digest}"
+    # new_request['Authorization'] = "Digest #{digest}"
     puts new_request.to_hash.inspect
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
