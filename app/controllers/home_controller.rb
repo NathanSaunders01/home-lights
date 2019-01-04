@@ -47,6 +47,10 @@ class HomeController < ApplicationController
     http.use_ssl = true
     resp = http.request(request)
     puts "Headers: #{resp.to_hash.inspect}"
+    puts resp.to_hash["www-authenticate"]
+    puts resp.to_hash["www-authenticate"]["nonce"]
+    puts resp.to_hash["nonce"]
+    puts resp.to_hash["realm"]
     puts resp
     puts resp.header
     puts resp.body
