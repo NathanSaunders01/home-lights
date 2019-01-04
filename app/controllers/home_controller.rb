@@ -87,8 +87,9 @@ class HomeController < ApplicationController
     # Digest username=”<clientid>”, realm=”oauth2_client@api.meethue.com”, nonce=”<nonce>”, uri=”/oauth2/token”, response=”<response>”
     # Digest username='ZNjRhksxVd5bUYJktFMot953iDOIgUaz', realm='oauth2_client@api.meethue.com', nonce='ab4cf293ccf1a5017fe498722ef88abb', uri='/oauth2/token' , response='4c58befa01cea9fe4e6e293318cda190'"}
     
-    body = new_resp.body
-    data = JSON.parse body
+    puts new_resp
+    puts new_resp.inspect
+    # data = JSON.parse body
     puts data
     puts data['access_token']
     # "Digest realm="oauth2_client@api.meethue.com", nonce="700b0ee5e8537be8dd4c62f35cea4ad8""
