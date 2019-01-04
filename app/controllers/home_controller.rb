@@ -48,12 +48,8 @@ class HomeController < ApplicationController
     resp = http.request(request)
     puts "Headers: #{resp.to_hash.inspect}"
     puts resp.to_hash["www-authenticate"]
-    puts resp.to_hash["www-authenticate"]["nonce"]
-    puts resp.to_hash["nonce"]
-    puts resp.to_hash["realm"]
-    puts resp
-    puts resp.header
-    puts resp.body
+    puts resp.to_hash["www-authenticate"][0]
+    puts resp.to_hash["www-authenticate"][0].split(",")
     # body = resp.body
     # data = JSON.parse body
     # puts data
