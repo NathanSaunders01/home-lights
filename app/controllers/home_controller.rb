@@ -74,6 +74,8 @@ class HomeController < ApplicationController
     
     header = { 'Authorization' => "Digest #{digest}" }
     
+    puts header
+    
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
