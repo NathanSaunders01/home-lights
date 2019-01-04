@@ -91,20 +91,20 @@ class HomeController < ApplicationController
     puts new_resp
     puts new_resp.inspect
     # data = JSON.parse body
-    puts data
-    puts data['access_token']
+    # puts data
+    # puts data['access_token']
     # "Digest realm="oauth2_client@api.meethue.com", nonce="700b0ee5e8537be8dd4c62f35cea4ad8""
-    current_owner.hue_token = data["access_token"]
-    current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
-    current_owner.refresh_token = data["refresh_token"]
-    current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
-    if current_owner.save!
-      puts "Success"
-      redirect_to home_path
-    else
-      puts "Fail"
-      redirect_to install_path
-    end
+    # current_owner.hue_token = data["access_token"]
+    # current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
+    # current_owner.refresh_token = data["refresh_token"]
+    # current_owner.refresh_expiry = Time.now + Integer(data["refresh_token_expires_in"])
+    # if current_owner.save!
+    #   puts "Success"
+    #   redirect_to home_path
+    # else
+    #   puts "Fail"
+    #   redirect_to install_path
+    # end
   end
   
   def change_light_state
