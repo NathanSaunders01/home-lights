@@ -79,10 +79,11 @@ class HomeController < ApplicationController
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
-    new_request = Net::HTTP::Post.new(new_uri.request_uri, header)
+    new_request = Net::HTTP::Post.new(new_uri.request_uri)
     puts "test prep"
     new_http.use_ssl = true
-    new_request.headers['Authorization'] = "Digest #{digest}"
+    new_request['Authorization'] = "Digest #{digest}"
+    # puts new_request.headers.to_hash.inspect
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
     puts "test done"
