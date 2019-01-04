@@ -72,14 +72,14 @@ class HomeController < ApplicationController
     digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token', response='#{response_digest}'"
     puts digest
     
-    # header = { 'Authorization': "Digest #{digest}" }
+    header = { 'Authorization': "Digest #{digest}" }
     
-    # puts header
+    puts header
     
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
-    new_request = Net::HTTP::Post.new(new_uri.path, initheader = {'Authorization': "#{digest}"})
+    new_request = Net::HTTP::Post.new(new_uri.path, header)
     puts "test prep"
     new_http.use_ssl = true
     # new_request['Authorization'] = "Digest #{digest}"
