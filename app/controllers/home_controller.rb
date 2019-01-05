@@ -22,11 +22,11 @@ class HomeController < ApplicationController
     http = Net::HTTP.new(uri.host, uri.port)
     body = { "linkbutton": true }
     req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
-    # req.body = body.to_json
+    req.body = body.to_json
     http.use_ssl = true
-    resp = http.request(request)
+    resp = http.request(req)
     puts resp
-    puts resp.body
+    # puts resp.body
     
     next_uri = URI.parse("https://api.meethue.com/bridge/0/config")
     next_http = Net::HTTP.new(next_uri.host, next_uri.port)
@@ -34,7 +34,7 @@ class HomeController < ApplicationController
     next_req = Net::HTTP::Post.new(next_uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
     next_req.body = body.to_json
     next_http.use_ssl = true
-    next_resp = next_http.request(request)
+    next_resp = next_http.request(next_req)
     puts next_resp.body
     data = JSON.parse body
     puts data.inspect
