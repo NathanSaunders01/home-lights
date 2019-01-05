@@ -133,6 +133,22 @@ class HomeController < ApplicationController
     end
   end
   
+  def test_light_connection
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER'}")
+    http = Net::HTTP.new(uri.host, uri.port)
+    body = { "on": true }
+    req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    req.body = body.to_json
+    http.use_ssl = true
+    resp = http.request(req)
+    puts resp
+    puts resp.body
+    puts "finished PUT"
+    # url = "https://api.meethue.com/bridge/#{ENV['HUE_USER'}"
+    # respo = Net::HTTP.get(uri) 
+    
+  end
+  
   def change_light_state
     #   uri = URI.parse("http://192.168.1.23/api/9gJAubXPvRsPgaoaL6tpWk949J3th1htn31NXIET/lights")
     #   http = Net::HTTP.new(uri.host)
