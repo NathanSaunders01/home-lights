@@ -26,7 +26,7 @@ class HomeController < ApplicationController
     http.use_ssl = true
     resp = http.request(req)
     puts resp
-    # puts resp.body
+    puts resp.body
     
     next_uri = URI.parse("https://api.meethue.com/bridge/0/config")
     next_http = Net::HTTP.new(next_uri.host, next_uri.port)
@@ -36,8 +36,8 @@ class HomeController < ApplicationController
     next_http.use_ssl = true
     next_resp = next_http.request(next_req)
     puts next_resp.body
-    data = JSON.parse body
-    puts data.inspect
+    # data = JSON.parse body
+    # puts data.inspect
   end
   
   def auth
