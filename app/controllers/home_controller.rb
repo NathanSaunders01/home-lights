@@ -48,7 +48,7 @@ class HomeController < ApplicationController
     resp = http.request(request)
     puts "Headers: #{resp.to_hash.inspect}"
     puts resp.to_hash["www-authenticate"]
-    puts resp.to_hash["www-authenticate"][0]
+    puts resp
     
     # nonce = resp.to_hash["www-authenticate"][0].split(",")[1].delete!('nonce=\"').tr(" ","")
     nonce = resp.to_hash["www-authenticate"][0].split(",")[1].split("=")[1].tr('\"','')
@@ -80,7 +80,7 @@ class HomeController < ApplicationController
       'nonce="'+nonce+'"',
       'uri="/oauth2/token"',
       'response="'+ response_digest + '"'
-    ].join(',')
+    ].join(', ')
     
     # header = { 'Authorization' => "Digest #{digest}" }
     
