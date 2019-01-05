@@ -1,4 +1,11 @@
 <%= form_for :light, url: test_light_connection_path  do |f| %>
+    <div class="row-ns">
+        <p class="form-ns__text">ON: </p>
+        <label class="form-ns__switch">
+          <input type="checkbox" class="form-ns__checkbox">
+          <span class="form-ns__slider round"></span>
+        </label>
+    </div>
     <div class="row-ns" style="margin-bottom: 0;">
         <div class="row-ns__even">
             <%= f.text_field :hue, placeholder:"Hue", autofocus: true, class: "form-ns__input" %>

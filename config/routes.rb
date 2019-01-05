@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   post "/test_light_connection", to: "home#test_light_connection"
   post "change_light_state", to: "home#change_light_state"
   post "toggle_light", to: "home#toggle_light"
+  post "switch_on", to: "home#switch_on"
+  post "switch_off", to: "home#switch_off"
   
   
 end

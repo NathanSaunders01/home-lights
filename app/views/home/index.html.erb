@@ -22,6 +22,7 @@
 
 <script>
     $(document).on('turbolinks:load', function() {
+        $csrfToken = $("meta[name='csrf-token']").attr("content");
         $('.tabs').tabs({
             // swipeable: true
         });
@@ -29,7 +30,52 @@
             var timer_id = $(this).attr("id")
            handleTimeSelection(timer_id); 
         });
+        $("body").on("click", ".form-ns__checkbox", function(e) {
+            console.log($(this).prop('checked'));
+            if (!$(this).prop("checked")) {
+                switchOffLights();
+            } else {
+                switchOnLights();
+            }
+            // $(this).prop('checked', !$(this).prop('checked'));
+        })
     });
+    
+    function switchOnLights() {
+        $.ajax({
+          url: "/switch_on",
+          type: "POST",
+          dataType:'json',
+          data: { 
+            on: true,
+            authenticity_token: $csrfToken
+          },
+          success:function(data){
+             console.log("win")
+          },
+          error:function(data){
+              console.log("lose")
+          }
+        });
+    }
+    
+    function switchOffLights() {
+        $.ajax({
+          url: "/switch_off",
+          type: "POST",
+          dataType:'json',
+          data: { 
+            on: true,
+            authenticity_token: $csrfToken
+          },
+          success:function(data){
+              console.log("win")
+          },
+          error:function(data){
+              console.log("lose")
+          }
+        });
+    }
     
     function handleTimeSelection(id) {
         $(".form-ns__btn").removeClass("active");
