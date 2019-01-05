@@ -136,3 +136,10 @@
       border-radius: 50%;
     }
 }
+
+@media (max-width: 500px) {
+    .form-ns {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
