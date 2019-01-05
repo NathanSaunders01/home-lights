@@ -78,7 +78,7 @@ class HomeController < ApplicationController
       'username="'+ENV['HUE_TOKEN']+'"',
       'realm="'+realm+'"',
       'nonce="'+nonce+'"',
-      'uri="/oauth2/token"',
+      'uri="/oauth/token"',
       'response="'+ response_digest + '"'
     ].join(', ')
     
@@ -89,7 +89,7 @@ class HomeController < ApplicationController
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
-    new_request = Net::HTTP::Post.new(new_uri.request_uri, initheader = { "Authorzation" => "Digest #{authorization}" })
+    new_request = Net::HTTP::Post.new(new_uri.request_uri, initheader = { "Authorization" => "Digest #{authorization}" })
     # auth = digest_auth.auth_header new_uri, res['www-authenticate'], 'POST'
 
     # create a new request with the Authorization header
