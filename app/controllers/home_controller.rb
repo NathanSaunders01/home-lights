@@ -134,7 +134,7 @@ class HomeController < ApplicationController
   end
   
   def test_light_connection
-    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER'}")
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}")
     http = Net::HTTP.new(uri.host, uri.port)
     body = { "on": true }
     req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
