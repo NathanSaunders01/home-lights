@@ -75,11 +75,11 @@ class HomeController < ApplicationController
     puts digest
     
     authorization = [
-      'username="' + ENV['HUE_TOKEN'] + '"',
+      'username="'+ENV['HUE_TOKEN']+'"',
       'realm="'+realm+'"',
       'nonce="'+nonce+'"',
       'uri="/oauth2/token"',
-      'response="'+ response_digest '"'
+      'response="'+ response_digest + '"'
     ].join(',')
     
     # header = { 'Authorization' => "Digest #{digest}" }
