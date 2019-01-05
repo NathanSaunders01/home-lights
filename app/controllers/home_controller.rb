@@ -78,7 +78,7 @@ class HomeController < ApplicationController
       'username="'+ENV['HUE_TOKEN']+'"',
       'realm="'+realm+'"',
       'nonce="'+nonce+'"',
-      'uri="/oauth/token"',
+      'uri="/oauth2/token"',
       'response="'+ response_digest + '"'
     ].join(', ')
     
