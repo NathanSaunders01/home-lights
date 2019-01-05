@@ -31,9 +31,9 @@ class HomeController < ApplicationController
     
     next_uri = URI.parse("https://api.meethue.com/bridge/")
     next_http = Net::HTTP.new(next_uri.host, next_uri.port)
-    next_body = { "devicetype":"codaxe_home_lights" }
+    next_body = { "devicetype": "codaxe_home_lights" }
     next_req = Net::HTTP::Post.new(next_uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
-    next_req.body = body.to_json
+    next_req.body = body
     next_http.use_ssl = true
     next_resp = next_http.request(next_req)
     puts next_resp.body
