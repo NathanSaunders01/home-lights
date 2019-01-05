@@ -27,6 +27,7 @@ class HomeController < ApplicationController
     resp = http.request(req)
     puts resp
     puts resp.body
+    puts "finished PUT"
     
     next_uri = URI.parse("https://api.meethue.com/bridge/0/config")
     next_http = Net::HTTP.new(next_uri.host, next_uri.port)
