@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   require 'net/https'
   require "uri"
   require 'digest/md5'
+  require 'net/http/digest_auth'
 
   def install
     @hue_token = ENV['HUE_TOKEN']
@@ -62,6 +63,7 @@ class HomeController < ApplicationController
     # var HASH1 = MD5("kVWjgzqk8hayM38pAudrA6psflju6k0T:oauth2_client@api.meethue.com:GHFV3f4L736bwgEB");
     # var HASH2 = MD5("POST:/oauth2/token");
     # var response = MD5(HASH1 + ":" + "7b6e45de18ac4ee452ee0a0de91dbb10" + ":" + HASH2);
+    digest_auth = Net::HTTP::DigestAuth.new
     string_digest_1 = "#{ENV['HUE_TOKEN']}:#{realm}:#{ENV['HUE_SECRET']}"
     string_digest_2 = "POST:/oauth2/token"
     response_digest_1 = Digest::MD5.hexdigest(string_digest_1)
@@ -79,7 +81,16 @@ class HomeController < ApplicationController
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
-    new_request = Net::HTTP::Post.new(new_uri.request_uri, initheader = { "Authorization" => "Digest #{digest}" })
+    new_request = Net::HTTP::Post.new(new_uri.request_uri)
+    auth = digest_auth.auth_header new_uri, res['www-authenticate'], 'POST'
+
+    # create a new request with the Authorization header
+    # req = Net::HTTP::Get.new uri.request_uri
+    new_request.add_field 'Authorization', auth
+    
+    # re-issue request with Authorization
+    res = h.request req
+    
     # new_request['Authorization'] = "Digest #{digest}"
     puts "test prep"
     new_http.use_ssl = true
