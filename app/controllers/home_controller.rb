@@ -24,7 +24,7 @@ class HomeController < ApplicationController
     puts resp.to_hash.inspect
     puts resp.body
     @light = JSON.parse resp.body
-    puts @light.state
+    puts @light["state"]
     puts "done"
   end
   
