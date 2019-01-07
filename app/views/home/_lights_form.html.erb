@@ -1,4 +1,4 @@
-<%= form_for :ight, url: test_light_connection_path  do |f| %>
+<%= form_for @light, url: test_light_connection_path  do |f| %>
     <div class="row-ns">
         <p class="form-ns__text">ON: </p>
         <label class="form-ns__switch">
@@ -8,12 +8,12 @@
     </div>
     <div class="row-ns" style="margin-bottom: 0;">
         <div class="row-ns__even">
-            <%= f.text_field @light["hue"], placeholder:"Hue", autofocus: true, class: "form-ns__input" %>
-            <%= f.label @light["hue"], class: "form-ns__label" %>
+            <%= f.text_field :hue, placeholder:"Hue", value: @light["hue"], autofocus: true, class: "form-ns__input" %>
+            <%= f.label :hue, class: "form-ns__label" %>
         </div>
         <div class="row-ns__even">
-            <%= f.text_field @light["bri"], placeholder:"Brightness", autofocus: true, class: "form-ns__input" %>
-            <%= f.label @light["bri"], class: "form-ns__label" %>
+            <%= f.text_field :bright, placeholder:"Brightness", value: @light["bri"], autofocus: true, class: "form-ns__input" %>
+            <%= f.label :bright, class: "form-ns__label" %>
         </div>
     </div>
     <p class="form-ns__input" style="width: auto; margin: 0;">Color Change Speed</p>
