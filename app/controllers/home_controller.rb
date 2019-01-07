@@ -7,14 +7,23 @@ class HomeController < ApplicationController
   require 'net/https'
   require "uri"
   require 'digest/md5'
-  # require 'net/http/digest_auth'
 
   def install
     @hue_token = ENV['HUE_TOKEN']
   end
   
   def index
-    
+    puts "start"
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}/lights/3")
+    http = Net::HTTP.new(uri.host, uri.port)
+    req = Net::HTTP::Get.new(uri.request_uri, initheader = { 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    puts req.to_hash.inspect
+    http.use_ssl = true
+    puts "ready"
+    resp = http.request(req)
+    puts resp.to_hash.inspect
+    puts resp.body
+    puts "done"
   end
   
   def get_username
