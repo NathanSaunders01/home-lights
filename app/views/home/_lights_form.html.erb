@@ -2,7 +2,7 @@
     <div class="row-ns">
         <p class="form-ns__text">ON: </p>
         <label class="form-ns__switch">
-          <input type="checkbox" <% if @light.state.on %>checked<% end %> class="form-ns__checkbox">
+          <input type="checkbox" <% if @light["state"]["on"] %>checked<% end %> class="form-ns__checkbox">
           <span class="form-ns__slider round"></span>
         </label>
     </div>
