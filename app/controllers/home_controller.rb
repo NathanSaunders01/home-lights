@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   require 'base64'
   require 'net/https'
   require "uri"
-  require 'digest/md5'
+  require 'digest/md5' 
 
   def install
     @hue_token = ENV['HUE_TOKEN']
@@ -23,8 +23,9 @@ class HomeController < ApplicationController
     resp = http.request(req)
     puts resp.to_hash.inspect
     puts resp.body
-    @light = JSON.parse resp.body
-    puts @light["state"]
+    data = JSON.parse resp.body
+    @light = data["state"]
+    puts @light
     puts "done"
   end
   
