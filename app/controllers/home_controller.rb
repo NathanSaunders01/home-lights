@@ -23,6 +23,8 @@ class HomeController < ApplicationController
     resp = http.request(req)
     puts resp.to_hash.inspect
     puts resp.body
+    @light = JSON.parse resp.body
+    puts @light.state
     puts "done"
   end
   
