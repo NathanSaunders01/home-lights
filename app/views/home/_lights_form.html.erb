@@ -1,4 +1,4 @@
-<%= form_for :llight, url: test_light_connection_path  do |f| %>
+<%= form_for :llight, url: change_light_state_path  do |f| %>
     <div class="row-ns">
         <p class="form-ns__text">ON: </p>
         <label class="form-ns__switch">
@@ -16,13 +16,21 @@
             <%= f.label :bright, class: "form-ns__label" %>
         </div>
     </div>
-    <p class="form-ns__input" style="width: auto; margin: 0;">Color Change Speed</p>
+    <p class="form-ns__input" style="width: auto; margin: 0;">Colour</p>
     <p class="range-field" style="margin-top: 0;">
-        <input type="range" id="test5" min="0" max="50" step="5" />
+        <input type="range" id="colour_range" min="0" max="100" step="1" value="<%= @light["hue_percent"] %>" />
+    </p>
+    <p class="form-ns__input" style="width: auto; margin: 0;">Brightness</p>
+    <p class="range-field" style="margin-top: 0;">
+        <input type="range" id="bri_range" min="0" max="100" step="1" value="<%= @light["bri_percent"] %>" />
+    </p>
+    <p class="form-ns__input" style="width: auto; margin: 0;">Colour Change Speed</p>
+    <p class="range-field" style="margin-top: 0;">
+        <input type="range" id="colour_speed_range" min="0" max="50" step="5" />
     </p>
     <p class="form-ns__input" style="width: auto; margin: 0;">Brightness Change Speed</p>
     <p class="range-field" style="margin-top: 0;">
-        <input type="range" id="test5" min="0" max="50" step="5" />
+        <input type="range" id="bri_speed_range" min="0" max="50" step="5" />
     </p>
     <div class="row-ns">
         <input type="hidden" id="duration"/>

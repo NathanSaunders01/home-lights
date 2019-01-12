@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   before_action :authenticate_owner!
   before_action :authenticate_hue, except: [:install, :auth]
+  before_action :set_uri, only: [:switch_on, :switch_off, :trigger_bri_rotation, :change_light_state]
   
   require 'net/http'
   require 'base64'
@@ -12,21 +13,42 @@ class HomeController < ApplicationController
     @hue_token = ENV['HUE_TOKEN']
   end
   
+  def trigger_bri_rotation
+    i = 0
+    begin
+       puts("Inside the loop i = #{i}" )
+       sleep 0.2
+       body = { 
+         "bri": 200
+       }
+       req.body = body.to_json
+       puts req.to_hash.inspect
+       resp = http.request(req)
+       puts resp
+       
+       sleep 1
+       body = { 
+         "bri": 240
+       }
+       req.body = body.to_json
+       puts req.to_hash.inspect
+       resp = http.request(req)
+       puts resp
+       i+=1
+    end until i > 100
+  end
+  
   def index
-    puts "start"
     uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}/lights/3")
     http = Net::HTTP.new(uri.host, uri.port)
     req = Net::HTTP::Get.new(uri.request_uri, initheader = { 'Authorization' => "Bearer #{current_owner.hue_token}"})
     puts req.to_hash.inspect
     http.use_ssl = true
-    puts "ready"
     resp = http.request(req)
-    puts resp.to_hash.inspect
-    puts resp.body
     data = JSON.parse resp.body
     @light = data["state"]
-    puts @light
-    puts "done"
+    @light["hue_percent"] = Home.calculate_val_from_hue(@light["hue"])
+    @light["bri_percent"] = Home.calculate_val_from_bri(@light["bri"])
   end
   
   def get_username
@@ -70,14 +92,6 @@ class HomeController < ApplicationController
     puts nonce
     puts realm
     
-    # HASH1	MD5(“CLIENTID” + “:” + “REALM” + “:” + “CLIENTSECRET”)
-    # HASH2	MD5(“VERB” + “:” + “PATH”)
-    # response	MD5(HASH1 + “:” + “NONCE” + “:” + HASH2)
-    
-    # var HASH1 = MD5("kVWjgzqk8hayM38pAudrA6psflju6k0T:oauth2_client@api.meethue.com:GHFV3f4L736bwgEB");
-    # var HASH2 = MD5("POST:/oauth2/token");
-    # var response = MD5(HASH1 + ":" + "7b6e45de18ac4ee452ee0a0de91dbb10" + ":" + HASH2);
-    # digest_auth = Net::HTTP::DigestAuth.new
     string_digest_1 = "#{ENV['HUE_TOKEN']}:#{realm}:#{ENV['HUE_SECRET']}"
     string_digest_2 = "POST:/oauth2/token"
     response_digest_1 = Digest::MD5.hexdigest(string_digest_1)
@@ -85,8 +99,6 @@ class HomeController < ApplicationController
     string_digest = "#{response_digest_1}:#{nonce}:#{response_digest_2}"
     response_digest = Digest::MD5.hexdigest(string_digest)
     puts "test start"
-    # digest = "username='#{ENV['HUE_TOKEN']}', realm='#{realm}', nonce='#{nonce}', uri='/oauth2/token', response='#{response_digest}'"
-    # puts digest
     
     authorization = [
       'username="'+ENV['HUE_TOKEN']+'"',
@@ -96,42 +108,24 @@ class HomeController < ApplicationController
       'response="'+ response_digest + '"'
     ].join(', ')
     
-    # header = { 'Authorization' => "Digest #{digest}" }
-    
     puts authorization
     
     new_uri = URI.parse("https://api.meethue.com/oauth2/token?code=#{params[:code]}&grant_type=authorization_code")
 
     new_http = Net::HTTP.new(new_uri.host, new_uri.port)
     new_request = Net::HTTP::Post.new(new_uri.request_uri, initheader = { "Authorization" => "Digest #{authorization}" })
-    # auth = digest_auth.auth_header new_uri, res['www-authenticate'], 'POST'
-
-    # create a new request with the Authorization header
-    # req = Net::HTTP::Get.new uri.request_uri
-    # new_request.add_field 'Authorization', auth
     
-    # re-issue request with Authorization
-    # res = h.request req
-    
-    # new_request['Authorization'] = "Digest #{digest}"
     puts "test prep"
     new_http.use_ssl = true
-    # new_request['Authorization'] = "Digest #{digest}"
     puts new_request.to_hash.inspect
     new_resp = new_http.request(new_request)
     puts "Headers: #{new_resp.to_hash.inspect}"
     puts "test done"
-    # Digest username=”<clientid>”, realm=”oauth2_client@api.meethue.com”, nonce=”<nonce>”, uri=”/oauth2/token”, response=”<response>”
-    # Digest username='ZNjRhksxVd5bUYJktFMot953iDOIgUaz', realm='oauth2_client@api.meethue.com', nonce='ab4cf293ccf1a5017fe498722ef88abb', uri='/oauth2/token' , response='4c58befa01cea9fe4e6e293318cda190'"}
     puts new_resp.body
     data = JSON.parse new_resp.body
     puts data.inspect
     puts new_resp
     puts new_resp.inspect
-    # data = JSON.parse body
-    # puts data
-    # puts data['access_token']
-    # "Digest realm="oauth2_client@api.meethue.com", nonce="700b0ee5e8537be8dd4c62f35cea4ad8""
     current_owner.hue_token = data["access_token"]
     current_owner.hue_expiry = Time.now + Integer(data["access_token_expires_in"])
     current_owner.refresh_token = data["refresh_token"]
@@ -172,16 +166,35 @@ class HomeController < ApplicationController
   end
   
   def change_light_state
-    #   uri = URI.parse("http://192.168.1.23/api/9gJAubXPvRsPgaoaL6tpWk949J3th1htn31NXIET/lights")
-    #   http = Net::HTTP.new(uri.host)
-      
-      uri = URI('192.168.1.23/api/9gJAubXPvRsPgaoaL6tpWk949J3th1htn31NXIET/lights')
-      respo = Net::HTTP.get(uri) 
-    #   response = http.request_put(uri.path, JSON.dump(body))
-    #   response = JSON(response.body).first
-    # #   url = URI.parse("http://192.168.1.23/api/9gJAubXPvRsPgaoaL6tpWk949J3th1htn31NXIET/lights/3/state")
-      puts respo
-      print params[:light]
+    puts uri.inspect
+  end
+  
+  def change_color
+    puts "change color"
+    puts params
+    hue_val = Home.calculate_hue(params[:value])
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}/lights/3/state")
+    http = Net::HTTP.new(uri.host, uri.port)
+    body = { "hue": hue_val }
+    req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    req.body = body.to_json
+    http.use_ssl = true
+    resp = http.request(req)
+    puts resp.body
+  end
+  
+  def change_bright
+    puts "change brightness"
+    puts params
+    hue_val = Home.calculate_bri(params[:value])
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}/lights/3/state")
+    http = Net::HTTP.new(uri.host, uri.port)
+    body = { "bri": hue_val }
+    req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
+    req.body = body.to_json
+    http.use_ssl = true
+    resp = http.request(req)
+    puts resp.body
   end
   
   def toggle_light
@@ -195,6 +208,13 @@ class HomeController < ApplicationController
     if current_owner.hue_token.blank?
       redirect_to install_path
     end
+  end
+  
+  def set_uri 
+    uri = URI.parse("https://api.meethue.com/bridge/#{ENV['HUE_USER']}/lights/3/state")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    req = Net::HTTP::Put.new(uri.request_uri, initheader = { 'Content-Type' => 'application/json', 'Authorization' => "Bearer #{current_owner.hue_token}"})
   end
   
 #     HUE_RANGE = 0..65535

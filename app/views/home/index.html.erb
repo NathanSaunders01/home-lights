@@ -39,7 +39,67 @@
             }
             // $(this).prop('checked', !$(this).prop('checked'));
         })
+        
+        $("body").on("change", "#colour_range", function() {
+            console.log($(this).val())
+            var val = $(this).val();
+            var convertedVal = convertHue(val);
+            $("#llight_hue").val(convertedVal)
+            handleColorChange(val);
+        })
+        
+        $("body").on("change", "#bri_range", function() {
+            console.log($(this).val())
+            var val = $(this).val();
+            var convertedVal = convertBri(val);
+            $("#llight_bri").val(convertedVal)
+            handleBriChange(val);
+        })
     });
+    
+    function convertHue(val) {
+         return Math.round((65535/100)*val)
+    }
+    
+    function convertBri(val) {
+         return Math.round((254/100)*val)
+    }
+    
+    function handleBriChange(val) {
+        $.ajax({
+          url: "/change_bright",
+          type: "POST",
+          dataType:'json',
+          data: { 
+            value: val,
+            authenticity_token: $csrfToken
+          },
+          success:function(data){
+             console.log("win")
+          },
+          error:function(data){
+              console.log("lose")
+          }
+        });
+    }
+    
+    function handleColorChange(val) {
+        $.ajax({
+          url: "/change_color",
+          type: "POST",
+          dataType:'json',
+          data: { 
+            value: val,
+            authenticity_token: $csrfToken
+          },
+          success:function(data){
+             console.log("win")
+          },
+          error:function(data){
+              console.log("lose")
+          }
+        });
+    }
     
     function switchOnLights() {
         $.ajax({
