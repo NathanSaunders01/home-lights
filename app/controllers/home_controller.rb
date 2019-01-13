@@ -46,6 +46,7 @@ class HomeController < ApplicationController
     http.use_ssl = true
     resp = http.request(req)
     data = JSON.parse resp.body
+    puts data
     @light = data["state"]
     @light["hue_percent"] = Home.calculate_val_from_hue(@light["hue"])
     @light["bri_percent"] = Home.calculate_val_from_bri(@light["bri"])
