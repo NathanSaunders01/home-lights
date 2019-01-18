@@ -1,4 +1,12 @@
+body {
+    background-color: black;
+}
+
 .container {
     width: 100%;
     padding: 20px 40px;
+}
+
+span, a, label, p, input {
+    color: white !important;
 }

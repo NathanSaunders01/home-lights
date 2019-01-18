@@ -8,7 +8,7 @@
         font-weight: 200;
         font-size: 24px;
         padding: 12px 16px;
-        background-color: rgba(255,255,255, .5);
+        background-color: transparent;
         border: none;
         border-bottom: 2px solid transparent;
         width: 100%;
@@ -17,11 +17,11 @@
         
         &:focus {
             outline: none;
-            border-bottom: 2px solid black;
+            border-bottom: 2px solid white;
         }
         
         &::-webkit-input-placeholder {
-            color: black;
+            color: white;
             font-family: 'Source Sans Pro', sans-serif;
             font-weight: 200;
         }
@@ -54,7 +54,7 @@
     
     &__btn {
         width: 100%;
-        border: 2px solid black;
+        border: 2px solid white;
         padding: 16px;
         text-align: center;
         font-family: 'Source Sans Pro', sans-serif;
@@ -65,12 +65,13 @@
         outline: none;
         display: block;
         text-decoration: none;
-        color: black;
+        background-color: black;
+        color: white;
         
         &:hover,
         &.active {
-            background-color: black;
-            color: white;
+            background-color: white;
+            color: black;
         }
     }
     
@@ -96,7 +97,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+      background-color: white;
       -webkit-transition: .4s;
       transition: .4s;
     }
@@ -108,7 +109,7 @@
       width: 26px;
       left: 4px;
       bottom: 4px;
-      background-color: white;
+      background-color: black;
       -webkit-transition: .4s;
       transition: .4s;
     }
